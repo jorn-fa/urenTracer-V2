@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="myFavoriteDBUnit" />
+
+    <persistence-unit name="werkuren"
+                      transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.62:3306/werkuren?serverTimezone=UTC" />
+            <property name="javax.persistence.jdbc.user" value="jorn_laptop" />
+            <property name="javax.persistence.jdbc.password" value="Jornhiel2108" />
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <!--  property name="javax.persistence.schema-generation.database.action"  value="drop-and-create" /-->
+            <property name="hibernate.show_sql" value="false" />
+            <property name="show_sql" value="false" />
+        </properties>
+    </persistence-unit>
+
+
+</persistence>
