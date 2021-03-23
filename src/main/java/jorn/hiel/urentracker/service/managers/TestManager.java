@@ -1,5 +1,6 @@
 package jorn.hiel.urentracker.service.managers;
 
+import jorn.hiel.urentracker.business.entities.WorkDay;
 import jorn.hiel.urentracker.repository.interfaces.WorkDayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,9 @@ public class TestManager {
   System.out.println("found items ?");
   System.out.println(repo==null);
   System.out.println(repo.findAll().size() + " items found");
+  for(WorkDay workday:repo.findAll()){
+   System.out.println(workday);
+  }
 
  }
 

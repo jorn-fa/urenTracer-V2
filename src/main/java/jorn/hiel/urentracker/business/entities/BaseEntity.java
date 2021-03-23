@@ -2,18 +2,17 @@
  
  import lombok.Setter;
  import lombok.Getter;
- import javax.persistence.GeneratedValue;
- import javax.persistence.Id;
- import javax.persistence.MappedSuperclass;
- import javax.persistence.Version;
- 
- 
+
+ import javax.persistence.*;
+
+
  @MappedSuperclass
  @Getter @Setter
  public class BaseEntity {
  
      @Id
      @GeneratedValue
+     @Column(name = "indexNummer")
      private Long id;
  
      @Version
