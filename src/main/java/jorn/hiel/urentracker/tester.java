@@ -12,10 +12,10 @@ public class tester {
 
     public static void main(String[] args) {
 
-        WorkDay workDay=new WorkDay().
-                setDay(LocalDateTime.now())
-                .setWorked(LocalTime.now())
-                .setExtraWorked(LocalTime.now())
+        WorkDay workDay=new WorkDay()
+                .setDay(LocalDateTime.of(2021,5,5,0,0))
+                .setWorked(LocalTime.of(8,5))
+                .setExtraWorked(LocalTime.of(0,45))
                 .setDayState(DayState.VERLOF)
                 ;
         System.out.println(workDay);
