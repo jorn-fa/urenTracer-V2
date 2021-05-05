@@ -11,7 +11,7 @@
  public class BaseEntity {
  
      @Id
-     @GeneratedValue
+     @GeneratedValue(strategy=GenerationType.IDENTITY)
      @Column(name = "indexNummer")
      private Long id;
  

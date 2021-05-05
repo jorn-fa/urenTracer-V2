@@ -6,10 +6,16 @@ import jorn.hiel.urentracker.repository.interfaces.ConfigDayRepository;
 import jorn.hiel.urentracker.repository.interfaces.WorkDayRepository;
 import jorn.hiel.urentracker.service.dto.WorkDayDto;
 import jorn.hiel.urentracker.service.mappers.WorkDayMapper;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@Slf4j
 public class TestManager {
 
  @Autowired
@@ -28,8 +34,28 @@ public class TestManager {
  }
 
  public void addDay(WorkDayDto dto){
-
+  log.debug("adding -> " + dto.toString());
   repo.save(mapper.mapToObj(dto));
+
+ }
+
+ /**
+  * removes a day from the database if found in database
+  * @param dto
+  */
+ public void removeDay(@NonNull WorkDayDto dto){
+  log.debug("trying to remove -> " + dto.toString());
+  WorkDay toRemove=mapper.mapToObj(dto);
+
+  Optional<WorkDay>fromRepo =
+  repo.findAll().stream().filter(a-> a.getDay().equals(toRemove.getDay())).findFirst();
+
+  if(fromRepo.isPresent()){
+   log.debug("removing ->" + fromRepo.toString());
+   repo.delete(fromRepo.get());
+  }
+
+
 
  }
 

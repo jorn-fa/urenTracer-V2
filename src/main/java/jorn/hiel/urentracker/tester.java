@@ -21,7 +21,8 @@ public class tester {
         System.out.println(workDay);
         WorkDayMapper mapper=new WorkDayMapper();
 
-        System.out.println(mapper.mapToDto(workDay).getDay());
+        //System.out.println(mapper.mapToDto(workDay).getDay());
+        System.out.println(mapper.mapToDto(workDay).toString());
 
 
 
