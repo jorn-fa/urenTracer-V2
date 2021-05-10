@@ -12,7 +12,10 @@ import lombok.extern.slf4j.XSlf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,8 +31,6 @@ public class TestManager {
  private WorkDayMapper mapper;
 
  public void runMe(){
-  printAllDays();
-
 
  }
 
@@ -41,7 +42,7 @@ public class TestManager {
 
  /**
   * removes a day from the database if found in database
-  * @param dto
+  * @param dto WorkDayDto
   */
  public void removeDay(@NonNull WorkDayDto dto){
   log.debug("trying to remove -> " + dto.toString());
@@ -69,4 +70,26 @@ public class TestManager {
    System.out.println(configDay);
   }
  }
+
+ public List<WorkDayDto> oldGetMonth(int month, int year){
+  List<WorkDayDto> dtos = new ArrayList<>();
+
+  repo.findAll().stream()
+          .filter(a -> a.getDay().getYear()==year)
+          .filter(a -> a.getDay().getMonthValue()==month)
+          .forEach(a-> dtos.add(mapper.mapToDto(a)));
+  return dtos;
+ }
+
+ public List<WorkDayDto> getMonth(int month, int year) {
+  return repo.findAll().stream()
+          .filter(a -> a.getDay().getYear()==year)
+          .filter(a -> a.getDay().getMonthValue()==month)
+          .map(a-> mapper.mapToDto(a))
+          .collect(Collectors.toList());
+
+
+ }
+
+
 }

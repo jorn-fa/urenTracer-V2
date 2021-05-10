@@ -24,30 +24,37 @@ public class Runner {
 
 
 
-
-
-
     public static void main(String[] args) {
 
         //SpringApplication.run(Runner.class, args);
         ApplicationContext app = SpringApplication.run(Application .class, args);//init
+
+
         TestManager manager = app.getBean(TestManager.class);//get the bean by type
         WorkDayMapper mapper = app.getBean(WorkDayMapper.class);
+
+
+
 
 
         System.out.println(
                 "running"
         );
-        manager.runMe();
+//        manager.runMe();
 
-        WorkDay workDay=new WorkDay()
+        /*WorkDay workDay=new WorkDay()
                 .setDay(LocalDateTime.of(2021,5,5,0,0))
                 .setWorked(LocalTime.of(8,5))
                 .setExtraWorked(LocalTime.of(0,45))
                 .setDayState(DayState.VERLOF)
-                ;
+                ;*/
 
-        manager.removeDay(mapper.mapToDto(workDay));
+//        manager.removeDay(mapper.mapToDto(workDay));
+
+        //System.out.println(manager.getMonth(01,2021).size());
+        manager.getMonth(1,2021).forEach(System.out::println);
+
+        manager.runMe();
 
 
 
