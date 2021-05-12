@@ -44,6 +44,10 @@ public class WorkDay extends BaseEntity {
 
     @Transient
     private LocalTime shouldWork=LocalTime.of(0,0,0);
+    @Transient
+    private LocalTime difference=LocalTime.of(0,0,0);
+    @Transient
+    private boolean toLowWorked=false;
 
 
     /**

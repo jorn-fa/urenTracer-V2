@@ -29,6 +29,9 @@ public class WorkDayMapper implements BasicMapper<WorkDay, WorkDayDto> {
                 .setExtraWorked(obj.getExtraWorked().toString())
                 .setDaystate(obj.getDayState())
                 .setTotalWorked(obj.getTotalWorked().toString())
-                .setToWork(obj.getShouldWork().toString());
+                .setToWork(obj.getShouldWork().toString())
+                .setDifference(obj.getDifference().toString())
+                .setToLow(obj.isToLowWorked());
+
     }
 }

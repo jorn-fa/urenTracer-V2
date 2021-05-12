@@ -13,7 +13,8 @@ import lombok.experimental.Accessors;
 public final class WorkDayDto {
 
     DayState daystate;
-    String day,worked, extraWorked,totalWorked,toWork;
+    String day,worked, extraWorked,totalWorked,toWork,difference;
+    boolean toLow;
 
 
 }

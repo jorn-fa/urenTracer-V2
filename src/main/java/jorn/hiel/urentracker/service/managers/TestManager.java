@@ -9,11 +9,10 @@ import jorn.hiel.urentracker.service.dto.WorkDayDto;
 import jorn.hiel.urentracker.service.mappers.WorkDayMapper;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.XSlf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,25 +53,13 @@ public class TestManager {
   log.debug("trying to remove -> " + dto);
   WorkDay toRemove=mapper.mapToObj(dto);
 
-  Optional<WorkDay>fromRepo =
-  repo.findAll().stream().filter(a-> a.getDay().equals(toRemove.getDay())).findFirst();
+  Optional<WorkDay>fromRepo = repo.findAll().stream().filter(a-> a.getDay().equals(toRemove.getDay())).findFirst();
 
   if(fromRepo.isPresent()){
-   log.debug("removing ->" + fromRepo.toString());
+   log.debug("removing ->" + fromRepo);
    repo.delete(fromRepo.get());
   }
 
- }
-
- private void printAllDays(){
-  for(WorkDay workday:repo.findAll()){
-   System.out.println(workday);
-  }
- }
- private void printConfig(){
-  for(ConfigDay configDay:configRepo.findAll()){
-   System.out.println(configDay);
-  }
  }
 
  public List<WorkDayDto> getMonth(int month, int year){
@@ -102,6 +89,16 @@ persisted values
 
    if (config.getDag().equals(workDay.getDay().getDayOfWeek().toString())){
     workDay.setShouldWork(config.getHours());
+
+    LocalTime calculatedWorked=workDay.getTotalWorked().minusNanos(workDay.getShouldWork().toNanoOfDay());
+
+    if(workDay.getTotalWorked().isBefore(workDay.getShouldWork())){
+     calculatedWorked=workDay.getShouldWork().minusNanos(workDay.getTotalWorked().toNanoOfDay());
+     workDay.setToLowWorked(true);
+    }
+
+    workDay.setDifference(calculatedWorked );
+
    }
   }}
 
