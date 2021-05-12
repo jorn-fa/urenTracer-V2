@@ -16,8 +16,9 @@ public class WorkDayMapper implements BasicMapper<WorkDay, WorkDayDto> {
         return new WorkDay()
                 .setDay(LocalDateTime.parse(dto.getDay()))
                 .setWorked(LocalTime.parse(dto.getWorked()))
-                .setExtraWorked(LocalTime.parse(dto.getExtraworked()))
-                .setDayState(dto.getDaystate());
+                .setExtraWorked(LocalTime.parse(dto.getExtraWorked()))
+                .setDayState(dto.getDaystate())
+                ;
     }
 
     @Override
@@ -25,7 +26,9 @@ public class WorkDayMapper implements BasicMapper<WorkDay, WorkDayDto> {
         return new WorkDayDto()
                 .setDay(obj.getDay().toString())
                 .setWorked(obj.getWorked().toString())
-                .setExtraworked(obj.getExtraWorked().toString())
-                .setDaystate(obj.getDayState());
+                .setExtraWorked(obj.getExtraWorked().toString())
+                .setDaystate(obj.getDayState())
+                .setTotalWorked(obj.getTotalWorked().toString())
+                .setToWork(obj.getShouldWork().toString());
     }
 }

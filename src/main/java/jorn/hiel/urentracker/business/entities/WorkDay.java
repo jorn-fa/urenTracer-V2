@@ -42,6 +42,10 @@ public class WorkDay extends BaseEntity {
     @Getter(value = AccessLevel.NONE)
     private int detail;
 
+    @Transient
+    private LocalTime shouldWork=LocalTime.of(0,0,0);
+
+
     /**
      *
      * @return DayState based on int value in detail
@@ -55,6 +59,10 @@ public class WorkDay extends BaseEntity {
             }}
 
         return DayState.WERK;
+    }
+
+    public LocalTime getTotalWorked(){
+        return worked.plusHours(extraWorked.getHour()).plusMinutes(extraWorked.getMinute());
     }
 
 

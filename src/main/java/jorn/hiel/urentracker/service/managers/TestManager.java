@@ -1,5 +1,6 @@
 package jorn.hiel.urentracker.service.managers;
 
+import jorn.hiel.urentracker.business.DayState;
 import jorn.hiel.urentracker.business.entities.ConfigDay;
 import jorn.hiel.urentracker.business.entities.WorkDay;
 import jorn.hiel.urentracker.repository.interfaces.ConfigDayRepository;
@@ -29,9 +30,14 @@ public class TestManager {
 
  @Autowired
  private WorkDayMapper mapper;
+ private List<ConfigDay> configDays;
 
  public void runMe(){
 
+ }
+
+ void readConfig(){
+  configDays=configRepo.findAll();
  }
 
  public void addDay(WorkDayDto dto){
@@ -45,7 +51,7 @@ public class TestManager {
   * @param dto WorkDayDto
   */
  public void removeDay(@NonNull WorkDayDto dto){
-  log.debug("trying to remove -> " + dto.toString());
+  log.debug("trying to remove -> " + dto);
   WorkDay toRemove=mapper.mapToObj(dto);
 
   Optional<WorkDay>fromRepo =
@@ -55,8 +61,6 @@ public class TestManager {
    log.debug("removing ->" + fromRepo.toString());
    repo.delete(fromRepo.get());
   }
-
-
 
  }
 
@@ -71,25 +75,39 @@ public class TestManager {
   }
  }
 
- public List<WorkDayDto> oldGetMonth(int month, int year){
-  List<WorkDayDto> dtos = new ArrayList<>();
-
-  repo.findAll().stream()
+ public List<WorkDayDto> getMonth(int month, int year){
+  if(configDays==null){readConfig();}
+  List<WorkDay> workDays =  repo.findAll().stream()
           .filter(a -> a.getDay().getYear()==year)
           .filter(a -> a.getDay().getMonthValue()==month)
-          .forEach(a-> dtos.add(mapper.mapToDto(a)));
-  return dtos;
- }
-
- public List<WorkDayDto> getMonth(int month, int year) {
-  return repo.findAll().stream()
-          .filter(a -> a.getDay().getYear()==year)
-          .filter(a -> a.getDay().getMonthValue()==month)
-          .map(a-> mapper.mapToDto(a))
           .collect(Collectors.toList());
 
+  workDays.forEach(this::calculateDifference);
+
+  return workDays.stream().map(a-> mapper.mapToDto(a)).collect(Collectors.toList());
+ }
+
+
+/*
+Fills in the missing data from preset week setup and calculates non
+persisted values
+ */
+
+ void calculateDifference(WorkDay workDay){
+  log.debug("calculating for " + workDay);
+
+  if(workDay.getDayState()== DayState.WERK){
+
+  for (ConfigDay config:configDays){
+
+   if (config.getDag().equals(workDay.getDay().getDayOfWeek().toString())){
+    workDay.setShouldWork(config.getHours());
+   }
+  }}
 
  }
+
+
 
 
 }
