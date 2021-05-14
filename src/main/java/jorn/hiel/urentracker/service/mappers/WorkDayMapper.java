@@ -23,6 +23,7 @@ public class WorkDayMapper implements BasicMapper<WorkDay, WorkDayDto> {
 
     @Override
     public WorkDayDto mapToDto(@NonNull WorkDay obj) {
+
         return new WorkDayDto()
                 .setDay(obj.getDay().toString())
                 .setWorked(obj.getWorked().toString())

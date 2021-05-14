@@ -7,12 +7,15 @@ import jorn.hiel.urentracker.repository.interfaces.ConfigDayRepository;
 import jorn.hiel.urentracker.repository.interfaces.WorkDayRepository;
 import jorn.hiel.urentracker.service.dto.WorkDayDto;
 import jorn.hiel.urentracker.service.mappers.WorkDayMapper;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,9 +34,16 @@ public class TestManager {
  private WorkDayMapper mapper;
  private List<ConfigDay> configDays;
 
- public void runMe(){
+ @Getter
+ private int minutesWorked;
+ @Getter
+ private int hoursWorked;
+ @Getter
+ private int minutesToWork;
+@Getter
+private int hoursToWork;
 
- }
+
 
  void readConfig(){
   configDays=configRepo.findAll();
@@ -62,14 +72,50 @@ public class TestManager {
 
  }
 
+ public void calculateMaxToWork(int month,int year){
+  if(configDays==null){readConfig();}
+
+  int howMany = LocalDate.of(year,month,1).lengthOfMonth();
+
+  for (ConfigDay config:configDays) {
+
+   for (int day=1;day<=howMany;day++){
+   LocalDate counter=LocalDate.of(year,month,day);
+   if (config.getDag().equals(counter.getDayOfWeek().toString())) {
+
+
+    hoursToWork+=config.getHours().getHour();
+    minutesToWork+=config.getHours().getMinute();
+    while (minutesToWork>=60){
+     hoursToWork++;
+     minutesToWork-=60;}
+    }
+   }
+  }
+
+
+
+ }
+
  public List<WorkDayDto> getMonth(int month, int year){
   if(configDays==null){readConfig();}
   List<WorkDay> workDays =  repo.findAll().stream()
           .filter(a -> a.getDay().getYear()==year)
           .filter(a -> a.getDay().getMonthValue()==month)
+          .sorted(Comparator.comparing(WorkDay::getDay))
           .collect(Collectors.toList());
 
   workDays.forEach(this::calculateDifference);
+
+
+ for (WorkDay workday:workDays){
+      minutesWorked+=workday.getTotalWorked().getMinute();
+      hoursWorked +=workday.getTotalWorked().getHour();
+      while (minutesWorked>=60){
+       hoursWorked++;
+       minutesWorked-=60;
+      }
+  }
 
   return workDays.stream().map(a-> mapper.mapToDto(a)).collect(Collectors.toList());
  }
@@ -104,7 +150,20 @@ persisted values
 
  }
 
+ /**
+  * resets the counter for worked hour
+  */
+ public void clearWorked(){
+  minutesWorked=0;
+  hoursWorked=0;
+ }
 
-
+ /**
+  * resets the counter for max hours to work
+  */
+ public void clearToWork(){
+  minutesToWork=0;
+  hoursToWork=0;
+ }
 
 }

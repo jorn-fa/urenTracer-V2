@@ -26,6 +26,7 @@ import javax.persistence.*;
 @ToString
 public class WorkDay extends BaseEntity {
 
+    @Transient
     private DayState dayState;
 
     @Column(name = "datum")
