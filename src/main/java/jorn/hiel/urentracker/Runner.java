@@ -1,22 +1,13 @@
 package jorn.hiel.urentracker;
 
 
-import jorn.hiel.urentracker.business.DayState;
-import jorn.hiel.urentracker.business.entities.WorkDay;
-import jorn.hiel.urentracker.repository.interfaces.WorkDayRepository;
 import jorn.hiel.urentracker.service.dto.WorkDayDto;
 import jorn.hiel.urentracker.service.managers.TestManager;
-import jorn.hiel.urentracker.service.mappers.WorkDayMapper;
 import lombok.extern.log4j.Log4j2;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 
