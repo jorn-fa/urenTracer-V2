@@ -166,4 +166,23 @@ persisted values
   hoursToWork=0;
  }
 
+
+ /**
+  * corrects max to work with known workdays;
+  * @param month List of WorkDayDto
+  */
+ public void processWorked(@NonNull List<WorkDayDto> month) {
+for(WorkDayDto dto:month){
+ if (dto.getDaystate()!=DayState.WERK){
+  WorkDay workDay=mapper.mapToObj(dto);
+  for(ConfigDay config:configDays){
+    if (config.getDag().equals(workDay.getDay().getDayOfWeek().toString())){
+   hoursToWork-=config.getHours().getHour();
+   minutesToWork-=config.getHours().getMinute();
+   }
+  }
+ }
+
+}
+ }
 }
