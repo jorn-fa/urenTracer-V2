@@ -4,9 +4,10 @@ import jorn.hiel.urentracker.business.entities.ConfigDay;
 import jorn.hiel.urentracker.service.dto.ConfigDayDto;
 import jorn.hiel.urentracker.service.interfaces.BasicMapper;
 import lombok.NonNull;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
-
+@Service
 public class ConfigDayMapper implements BasicMapper<ConfigDay, ConfigDayDto> {
 
 

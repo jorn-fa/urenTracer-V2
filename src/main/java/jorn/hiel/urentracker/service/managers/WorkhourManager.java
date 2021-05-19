@@ -5,7 +5,9 @@ import jorn.hiel.urentracker.business.entities.ConfigDay;
 import jorn.hiel.urentracker.business.entities.WorkDay;
 import jorn.hiel.urentracker.repository.interfaces.ConfigDayRepository;
 import jorn.hiel.urentracker.repository.interfaces.WorkDayRepository;
+import jorn.hiel.urentracker.service.dto.ConfigDayDto;
 import jorn.hiel.urentracker.service.dto.WorkDayDto;
+import jorn.hiel.urentracker.service.mappers.ConfigDayMapper;
 import jorn.hiel.urentracker.service.mappers.WorkDayMapper;
 import lombok.Getter;
 import lombok.NonNull;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class TestManager {
+public class WorkhourManager {
 
  @Autowired
  private WorkDayRepository repo;
@@ -32,6 +34,10 @@ public class TestManager {
 
  @Autowired
  private WorkDayMapper mapper;
+
+ @Autowired
+ private ConfigDayMapper configMapper;
+
  private List<ConfigDay> configDays;
 
  @Getter
@@ -47,6 +53,12 @@ private int hoursToWork;
 
  void readConfig(){
   configDays=configRepo.findAll();
+ }
+
+ public List<ConfigDayDto> getConfigDayDtos(){
+  readConfig();
+
+  return configDays.stream().map(a-> configMapper.mapToDto(a)).collect(Collectors.toList());
  }
 
  public void addDay(WorkDayDto dto){
@@ -184,5 +196,11 @@ for(WorkDayDto dto:month){
  }
 
 }
+ }
+
+ public void updateConfig(List<ConfigDayDto> dtos) {
+  dtos.stream()
+          .map(a-> configMapper.mapToObj(a))
+          .forEach(b->configRepo.save(b));
  }
 }
