@@ -9,18 +9,20 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import jorn.hiel.urentracker.controllers.ConfigUrenPresenter;
+import jorn.hiel.urentracker.helpers.TextFieldPatterns;
 import jorn.hiel.urentracker.service.managers.WorkhourManager;
 import jorn.hiel.urentracker.views.main.MainView;
 import com.vaadin.flow.component.dependency.CssImport;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import jorn.hiel.urentracker.helpers.TextFieldPatterns;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 
 @Route(value = "urenConfig", layout = MainView.class)
-@PageTitle("uren config")
+@PageTitle("uren definitie")
 @CssImport("./views/urenconfig/urenconfig-view.css")
 @SpringComponent
 @UIScope
@@ -99,7 +101,7 @@ public class UrenconfigView extends HorizontalLayout {
         field.setMaxLength(5);
         field.setMinLength(5);
         field.setHelperText("maximum uren in formaat xx:yy");
-        field.setPattern();
+        field.setPattern(TextFieldPatterns.HOURPATTERN);
     }
 
 
