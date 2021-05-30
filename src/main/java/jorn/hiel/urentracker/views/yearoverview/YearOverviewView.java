@@ -7,8 +7,8 @@ import com.vaadin.flow.router.PageTitle;
 import jorn.hiel.urentracker.views.main.MainView;
 import com.vaadin.flow.component.dependency.CssImport;
 
-@Route(value = "yearoverview", layout = MainView.class)
-@PageTitle("YearOverview")
+@Route(value = "jaaroverzicht", layout = MainView.class)
+@PageTitle("Jaar overzicht")
 @CssImport("./views/yearoverview/year-overview-view.css")
 public class YearOverviewView extends Div {
 

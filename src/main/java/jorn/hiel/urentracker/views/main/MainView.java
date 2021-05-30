@@ -82,8 +82,8 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Show my current month", ShowmycurrentmonthView.class),
-                createTab("YearOverview", YearOverviewView.class), createTab("uren config", UrenconfigView.class)};
+        return new Tab[]{createTab("huidige maand", ShowmycurrentmonthView.class),
+                createTab("Jaaroverzicht", YearOverviewView.class), createTab("uren definitie", UrenconfigView.class)};
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {

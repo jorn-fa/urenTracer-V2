@@ -15,8 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -41,13 +44,13 @@ public class WorkhourManager {
  private List<ConfigDay> configDays;
 
  @Getter
- private int minutesWorked;
+ private int minutesWorked=0;
  @Getter
- private int hoursWorked;
+ private int hoursWorked=0;
  @Getter
- private int minutesToWork;
+ private int minutesToWork=0;
 @Getter
-private int hoursToWork;
+private int hoursToWork=0;
 
 
 
@@ -202,5 +205,18 @@ for(WorkDayDto dto:month){
   dtos.stream()
           .map(a-> configMapper.mapToObj(a))
           .forEach(b->configRepo.save(b));
+ }
+
+ public String getDifference() {
+  Duration min = Duration.ofHours(getHoursToWork()).plusMinutes(getMinutesToWork());
+  Duration max = Duration.ofHours(getHoursWorked()).plusMinutes(getMinutesWorked());
+  long hours= max.minus(min).toHours();
+  long minutes =max.minus(min).toMinutesPart();
+  if(hours<0 || minutes<0){
+
+   return "-"+Math.abs(hours)+":"+String.format("%02d" , Math.abs(minutes))+" (short)";
+  }
+
+  return hours+":"+String.format("%02d" , Math.abs(minutes));
  }
 }
