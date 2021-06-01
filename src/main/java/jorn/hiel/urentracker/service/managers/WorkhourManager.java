@@ -65,8 +65,27 @@ private int hoursToWork=0;
  }
 
  public void addDay(WorkDayDto dto){
-  log.debug("adding -> " + dto.toString());
-  repo.save(mapper.mapToObj(dto));
+
+WorkDay day=mapper.mapToObj(dto);
+WorkDay toSave;
+Optional<WorkDay> workday = repo.findAll().stream().filter(a-> a.getDay().equals(day.getDay())).findFirst();
+
+if(workday.isPresent()) {
+
+ if (day.getWorked().equals(day.getWorked()) && day.getExtraWorked().equals(day.getExtraWorked())) {
+  //update if values are different
+  toSave= workday.get();
+  toSave.setWorked(day.getWorked());
+  toSave.setExtraWorked(day.getExtraWorked());
+  repo.save(toSave);
+
+ }
+}
+else {
+ System.out.println("adding -> " + dto.toString());
+ log.debug("adding -> " + dto.toString());
+ repo.save(mapper.mapToObj(dto));
+}
 
  }
 

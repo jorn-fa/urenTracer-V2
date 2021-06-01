@@ -1,5 +1,7 @@
 package jorn.hiel.urentracker.views.showmycurrentmonth;
 
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.listbox.ListBox;
@@ -48,10 +50,7 @@ public class ShowmycurrentmonthView extends HorizontalLayout {
     private TextField day1Extra,day2Extra,day3Extra,day4Extra,day5Extra,day6Extra,day7Extra,day8Extra,day9Extra,day10Extra,day11Extra,day12Extra,day13Extra,day14Extra,day15Extra,day16Extra,day17Extra,day18Extra,day19Extra,day20Extra,day21Extra,day22Extra,day23Extra,day24Extra,day25Extra,day26Extra,day27Extra,day28Extra,day29Extra,day30Extra,day31Extra;
     private TextField day1Detail,day2Detail,day3Detail,day4Detail,day5Detail,day6Detail,day7Detail,day8Detail,day9Detail,day10Detail,day11Detail,day12Detail,day13Detail,day14Detail,day15Detail,day16Detail,day17Detail,day18Detail,day19Detail,day20Detail,day21Detail,day22Detail,day23Detail,day24Detail,day25Detail,day26Detail,day27Detail,day28Detail,day29Detail,day30Detail,day31Detail;
     private Select<DayState> day1State,day2State,day3State,day4State,day5State,day6State,day7State,day8State,day9State,day10State,day11State,day12State,day13State,day14State,day15State,day16State,day17State,day18State,day19State,day20State,day21State,day22State,day23State,day24State,day25State,day26State,day27State,day28State,day29State,day30State,day31State;
-
-
-
-
+    private Button update;
 
 
     private NumberField monthField;
@@ -72,6 +71,10 @@ public class ShowmycurrentmonthView extends HorizontalLayout {
         fields.forEach(this::setCommon);
         extras.forEach(this::setCommon);
     }
+    public void reloadUi(){
+        UI.getCurrent().getPage().reload();
+    }
+
 
 
     public ShowmycurrentmonthView() {
@@ -85,8 +88,6 @@ public class ShowmycurrentmonthView extends HorizontalLayout {
         extras = Arrays.asList(day1Extra,day2Extra,day3Extra,day4Extra,day5Extra,day6Extra,day7Extra,day8Extra,day9Extra,day10Extra,day11Extra,day12Extra,day13Extra,day14Extra,day15Extra,day16Extra,day17Extra,day18Extra,day19Extra,day20Extra,day21Extra,day22Extra,day23Extra,day24Extra,day25Extra,day26Extra,day27Extra,day28Extra,day29Extra,day30Extra,day31Extra);
         details = Arrays.asList(day1Detail,day2Detail,day3Detail,day4Detail,day5Detail,day6Detail,day7Detail,day8Detail,day9Detail,day10Detail,day11Detail,day12Detail,day13Detail,day14Detail,day15Detail,day16Detail,day17Detail,day18Detail,day19Detail,day20Detail,day21Detail,day22Detail,day23Detail,day24Detail,day25Detail,day26Detail,day27Detail,day28Detail,day29Detail,day30Detail,day31Detail);
         states = Arrays.asList(day1State,day2State,day3State,day4State,day5State,day6State,day7State,day8State,day9State,day10State,day11State,day12State,day13State,day14State,day15State,day16State,day17State,day18State,day19State,day20State,day21State,day22State,day23State,day24State,day25State,day26State,day27State,day28State,day29State,day30State,day31State);
-
-
 
 
         month=LocalDate.now().getMonthValue();
@@ -113,6 +114,8 @@ public class ShowmycurrentmonthView extends HorizontalLayout {
         add(toWork);
         add(maxWork);
         add(resultWorked);
+        update=new Button("Update");
+        add(update);
 
         FormLayout form = new FormLayout();
         add(form);
@@ -165,6 +168,11 @@ public class ShowmycurrentmonthView extends HorizontalLayout {
     public void verifyEndOfMonth() {
         LocalDate filter=LocalDate.of(yearField.getValue().intValue(),monthField.getValue().intValue(),1);
 
+        details.forEach(x-> x.setVisible(true));
+        fields.forEach(x-> x.setVisible(true));
+        extras.forEach(x-> x.setVisible(true));
+        states.forEach(x-> x.setVisible(true));
+
 
         if (filter.lengthOfMonth()==30) {
             day31Detail.setVisible(false);
@@ -199,6 +207,7 @@ public class ShowmycurrentmonthView extends HorizontalLayout {
                     details.get(day-1).getValue().contains("sun")){
                 states.get(day-1).setValue(DayState.WEEKEND);
             }
+            details.get(day-1).setReadOnly(true);
 
 
         }
@@ -223,12 +232,11 @@ public class ShowmycurrentmonthView extends HorizontalLayout {
         layout.add(label,fieldOne,fieldTwo,selectBox);
         return layout;
     }
-private TextField setCommon(TextField field) {
+private void setCommon(TextField field) {
     field.setPlaceholder("00:00");
     field.setMaxLength(5);
-    field.setMinLength(5);
+    //field.setMinLength(4);
     field.setPattern(TextFieldPatterns.HOURPATTERN);
-    return field;
 }
 private String createLabel(int day){
         try {return (LocalDate.of((int)year,(int)month,day).getDayOfWeek().name().toLowerCase(Locale.ROOT))+" " + day;}

@@ -15,6 +15,7 @@ public final class WorkDayDto {
     DayState daystate;
     String day,worked, extraWorked,totalWorked,toWork,difference;
     boolean toLow;
+    long id;
 
 
 }
