@@ -77,6 +77,7 @@ if(workday.isPresent()) {
   toSave= workday.get();
   toSave.setWorked(day.getWorked());
   toSave.setExtraWorked(day.getExtraWorked());
+  toSave.setDetail(day.getDetail());
   repo.save(toSave);
 
  }

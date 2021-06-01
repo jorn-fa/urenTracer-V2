@@ -39,8 +39,7 @@ public class WorkDay extends BaseEntity {
     private LocalTime extraWorked;
 
     @Column(name = "detail")
-    @Setter(value = AccessLevel.NONE)
-    @Getter(value = AccessLevel.NONE)
+
     private int detail;
 
     @Transient
@@ -69,6 +68,7 @@ public class WorkDay extends BaseEntity {
     public LocalTime getTotalWorked(){
         return worked.plusHours(extraWorked.getHour()).plusMinutes(extraWorked.getMinute());
     }
+
 
 
 }

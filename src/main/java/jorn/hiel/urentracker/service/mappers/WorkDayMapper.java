@@ -21,6 +21,7 @@ public class WorkDayMapper implements BasicMapper<WorkDay, WorkDayDto> {
             dto.setExtraWorked(("00:00"));
         }
 
+
         if(dto.getWorked().substring(1,2).equals(":")){dto.setWorked("0"+dto.getWorked());}
         if(dto.getExtraWorked().substring(1,2).equals(":")){dto.setExtraWorked("0"+dto.getExtraWorked());}
         if(dto.getWorked().length()==4){dto.setWorked(dto.getWorked()+"0");}
@@ -32,6 +33,7 @@ public class WorkDayMapper implements BasicMapper<WorkDay, WorkDayDto> {
                 .setWorked(LocalTime.parse(dto.getWorked()))
                 .setExtraWorked(LocalTime.parse(dto.getExtraWorked()))
                 .setDayState(dto.getDaystate())
+                .setDetail(dto.getDaystate().getValue())
                 ;
     }
 
