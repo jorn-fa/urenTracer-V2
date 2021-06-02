@@ -52,7 +52,7 @@ public class WorkhourManager {
 @Getter
 private int hoursToWork=0;
 
-
+private List<WorkDay> fromRepo=null;
 
  void readConfig(){
   configDays=configRepo.findAll();
@@ -72,19 +72,18 @@ Optional<WorkDay> workday = repo.findAll().stream().filter(a-> a.getDay().equals
 
 if(workday.isPresent()) {
 
- if (day.getWorked().equals(day.getWorked()) && day.getExtraWorked().equals(day.getExtraWorked())) {
+ //if (day.getWorked().equals(day.getWorked()) && day.getExtraWorked().equals(day.getExtraWorked())) {
   //update if values are different
   toSave= workday.get();
   toSave.setWorked(day.getWorked());
   toSave.setExtraWorked(day.getExtraWorked());
   toSave.setDetail(day.getDetail());
   repo.save(toSave);
-
- }
+ //}
 }
 else {
- System.out.println("adding -> " + dto.toString());
- log.debug("adding -> " + dto.toString());
+ System.out.println("adding -> " + dto);
+ log.debug("adding -> " + dto);
  repo.save(mapper.mapToObj(dto));
 }
 
@@ -132,9 +131,17 @@ else {
 
  }
 
+ public void updateFromRepo(){
+  fromRepo=repo.findAll();
+ }
  public List<WorkDayDto> getMonth(int month, int year){
+
+  if(fromRepo==null){
+   updateFromRepo();
+  }
+
   if(configDays==null){readConfig();}
-  List<WorkDay> workDays =  repo.findAll().stream()
+  List<WorkDay> workDays =  fromRepo.stream()
           .filter(a -> a.getDay().getYear()==year)
           .filter(a -> a.getDay().getMonthValue()==month)
           .sorted(Comparator.comparing(WorkDay::getDay))

@@ -68,6 +68,7 @@ public class CurrentMonthPresenter {
                 }
             }
         }
+        manager.updateFromRepo();
         readMonth();
 
     }

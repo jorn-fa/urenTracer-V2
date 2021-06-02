@@ -168,11 +168,12 @@ public class ShowmycurrentmonthView extends HorizontalLayout {
     public void verifyEndOfMonth() {
         LocalDate filter=LocalDate.of(yearField.getValue().intValue(),monthField.getValue().intValue(),1);
 
-        details.forEach(x-> x.setVisible(true));
-        fields.forEach(x-> x.setVisible(true));
-        extras.forEach(x-> x.setVisible(true));
-        states.forEach(x-> x.setVisible(true));
-
+        for(int day=27;day<31;day++){
+            details.get(day).setVisible(true);
+            fields.get(day).setVisible(true);
+            extras.get(day).setVisible(true);
+            states.get(day).setVisible(true);
+        }
 
         if (filter.lengthOfMonth()==30) {
             day31Detail.setVisible(false);
